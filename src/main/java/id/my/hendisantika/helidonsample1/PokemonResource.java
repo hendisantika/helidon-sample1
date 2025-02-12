@@ -2,7 +2,9 @@ package id.my.hendisantika.helidonsample1;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -48,5 +50,12 @@ public class PokemonResource {
         ArrayList<Object> pokemons = pokemonService
                 .getPokemons(!Objects.isNull(limit) ? limit : defaultLimit);
         return getResult(pokemons);
+    }
+
+    @POST
+    public long addPokemon(JsonObject jsonObject) {
+        return pokemonService
+                .addPokemon(jsonObject.toString())
+                .getAffectedItemsCount();
     }
 }
