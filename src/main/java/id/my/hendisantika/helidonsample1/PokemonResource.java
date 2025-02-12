@@ -6,6 +6,7 @@ import jakarta.json.JsonObject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -65,6 +66,14 @@ public class PokemonResource {
     public long removePokemon(@PathParam("id") String id) {
         return pokemonService
                 .removePokemon(id)
+                .getAffectedItemsCount();
+    }
+
+    @PUT
+    @Path("/{id}/{name}")
+    public long updatePokemon(@PathParam("id") String id, @PathParam("name") String name) {
+        return pokemonService
+                .updatePokemonName(id, name)
                 .getAffectedItemsCount();
     }
 
