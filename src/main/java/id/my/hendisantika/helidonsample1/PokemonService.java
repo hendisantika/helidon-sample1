@@ -101,4 +101,10 @@ public class PokemonService {
         session.close();
         return result;
     }
+
+    @FunctionalInterface
+    private interface CallInSession<R> {
+        R call(Collection collection);
+    }
+
 }
