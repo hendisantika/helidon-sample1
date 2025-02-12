@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.AddResult;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
+import com.mysql.cj.xdevapi.Collection;
 import com.mysql.cj.xdevapi.DbDoc;
 import com.mysql.cj.xdevapi.DocResult;
 import com.mysql.cj.xdevapi.ModifyStatement;
 import com.mysql.cj.xdevapi.Result;
+import com.mysql.cj.xdevapi.Schema;
+import com.mysql.cj.xdevapi.Session;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -84,6 +87,18 @@ public class PokemonService {
                 throw new RuntimeException(e);
             }
         }
+        return result;
+    }
+
+    //Helper: run code in a Session, using the collection.
+    private <R> R callInSession(CallInSession<R> caller) {
+        Session session = cli.getSession();
+        Schema schema = session.getSchema(this.schema);
+        Collection col = schema.getCollection(this.collection);
+
+        R result = caller.call(col);
+
+        session.close();
         return result;
     }
 }
