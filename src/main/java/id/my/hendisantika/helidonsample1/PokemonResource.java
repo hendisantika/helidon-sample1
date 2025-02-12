@@ -1,6 +1,7 @@
 package id.my.hendisantika.helidonsample1;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.Path;
 
 /**
@@ -19,4 +20,9 @@ import jakarta.ws.rs.Path;
 public class PokemonResource {
     private final PokemonService pokemonService;
     private final Integer defaultLimit = 5;
+
+    @Inject
+    public PokemonResource(PokemonService pokemonService) {
+        this.pokemonService = pokemonService;
+    }
 }
