@@ -3,6 +3,7 @@ package id.my.hendisantika.helidonsample1;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -58,4 +59,13 @@ public class PokemonResource {
                 .addPokemon(jsonObject.toString())
                 .getAffectedItemsCount();
     }
+
+    @DELETE
+    @Path("/{id}")
+    public long removePokemon(@PathParam("id") String id) {
+        return pokemonService
+                .removePokemon(id)
+                .getAffectedItemsCount();
+    }
+
 }
