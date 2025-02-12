@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,8 +23,21 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class PokemonService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final ClientFactory clientFactory = new ClientFactory();
-    private String url;
-    private String schema;
-    private String collection;
-    private Client cli;
+    private final String url;
+    private final String schema;
+    private final String collection;
+    private final Client cli;
+
+    @Inject
+    public PokemonService(@ConfigProperty(name = "demo.user") String user,
+                          @ConfigProperty(name = "demo.password") String password,
+                          @ConfigProperty(name = "demo.host") String host,
+                          @ConfigProperty(name = "demo.port") String port,
+                          @ConfigProperty(name = "demo.schema") String schema,
+                          @ConfigProperty(name = "demo.collection") String collection) {
+        this.url = "mysqlx://" + user + ":" + password + "@" + host + ":" + port + "/";
+        this.schema = schema;
+        this.collection = collection;
+        this.cli = clientFactory.getClient(this.url, "{\"pooling\":{\"enabled\":true, \"maxSize\":8,\"maxIdleTime\":30000, \"queueTimeout\":10000} }");
+    }
 }
