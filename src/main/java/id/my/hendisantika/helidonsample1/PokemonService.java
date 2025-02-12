@@ -1,6 +1,7 @@
 package id.my.hendisantika.helidonsample1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.xdevapi.AddResult;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
 import com.mysql.cj.xdevapi.DocResult;
@@ -50,4 +51,10 @@ public class PokemonService {
             return processResults(result.fetchAll());
         });
     }
+
+    public AddResult addPokemon(String json) {
+        return callInSession(col -> col.add(json).execute()
+        );
+    }
+
 }
