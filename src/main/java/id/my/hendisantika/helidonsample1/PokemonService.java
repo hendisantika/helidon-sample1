@@ -1,9 +1,11 @@
 package id.my.hendisantika.helidonsample1;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.AddResult;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
+import com.mysql.cj.xdevapi.DbDoc;
 import com.mysql.cj.xdevapi.DocResult;
 import com.mysql.cj.xdevapi.ModifyStatement;
 import com.mysql.cj.xdevapi.Result;
@@ -12,6 +14,7 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -70,5 +73,17 @@ public class PokemonService {
                     return modifyStatement.execute();
                 }
         );
+    }
+
+    private ArrayList<Object> processResults(List<DbDoc> docs) {
+        ArrayList<Object> result = new ArrayList<>();
+        for (DbDoc doc : docs) {
+            try {
+                result.add(objectMapper.readTree(doc.toString()));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
     }
 }
