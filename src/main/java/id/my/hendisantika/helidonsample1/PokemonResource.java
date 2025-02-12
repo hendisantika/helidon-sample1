@@ -13,6 +13,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -77,4 +79,11 @@ public class PokemonResource {
                 .getAffectedItemsCount();
     }
 
+    private static String getResult(List<?> pokemons) {
+        LinkedHashMap result = new LinkedHashMap();
+        result.put("count", pokemons.size());
+        result.put("pokemons", pokemons);
+
+        return result.toString();
+    }
 }
