@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:9.1.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: 53cret
+      MYSQL_DATABASE: pokemon_db
+      MYSQL_USER: yu71
+      MYSQL_PASSWORD: 53cret
+    ports:
+      - "33060:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
