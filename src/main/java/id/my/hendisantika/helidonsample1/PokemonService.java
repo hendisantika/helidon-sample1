@@ -3,9 +3,12 @@ package id.my.hendisantika.helidonsample1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
+import com.mysql.cj.xdevapi.DocResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,5 +42,12 @@ public class PokemonService {
         this.schema = schema;
         this.collection = collection;
         this.cli = clientFactory.getClient(this.url, "{\"pooling\":{\"enabled\":true, \"maxSize\":8,\"maxIdleTime\":30000, \"queueTimeout\":10000} }");
+    }
+
+    public ArrayList<Object> getPokemons(Integer limit) throws Exception {
+        return callInSession(col -> {
+            DocResult result = col.find().limit(limit).execute();
+            return processResults(result.fetchAll());
+        });
     }
 }
