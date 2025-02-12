@@ -5,6 +5,7 @@ import com.mysql.cj.xdevapi.AddResult;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
 import com.mysql.cj.xdevapi.DocResult;
+import com.mysql.cj.xdevapi.ModifyStatement;
 import com.mysql.cj.xdevapi.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -60,6 +61,14 @@ public class PokemonService {
 
     public Result removePokemon(String id) {
         return callInSession(col -> col.removeOne(id)
+        );
+    }
+
+    public Result updatePokemonName(String id, String name) {
+        return callInSession(col -> {
+                    ModifyStatement modifyStatement = col.modify("_id='" + id + "'").set("name", name);
+                    return modifyStatement.execute();
+                }
         );
     }
 }
