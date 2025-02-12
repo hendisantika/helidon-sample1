@@ -4,10 +4,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,6 +38,15 @@ public class PokemonResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String defaultList() throws Exception {
         ArrayList<Object> pokemons = pokemonService.getPokemons(defaultLimit);
+        return getResult(pokemons);
+    }
+
+    @GET
+    @Path("/{limit}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String listLimit(@PathParam("limit") Integer limit) throws Exception {
+        ArrayList<Object> pokemons = pokemonService
+                .getPokemons(!Objects.isNull(limit) ? limit : defaultLimit);
         return getResult(pokemons);
     }
 }
