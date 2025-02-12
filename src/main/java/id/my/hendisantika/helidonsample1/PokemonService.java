@@ -5,6 +5,7 @@ import com.mysql.cj.xdevapi.AddResult;
 import com.mysql.cj.xdevapi.Client;
 import com.mysql.cj.xdevapi.ClientFactory;
 import com.mysql.cj.xdevapi.DocResult;
+import com.mysql.cj.xdevapi.Result;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -57,4 +58,8 @@ public class PokemonService {
         );
     }
 
+    public Result removePokemon(String id) {
+        return callInSession(col -> col.removeOne(id)
+        );
+    }
 }
